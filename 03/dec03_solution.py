@@ -8,7 +8,7 @@ import numpy as np
 ##########################################
 #            PARSE INPUT FN
 ##########################################
-# Converts the input data a list of 2 lists for later processing
+# Converts the input data a list of 3 lists for later processing
 #
 def processRawData(raw_data, bag_delimiter):
     # split into bags
@@ -20,11 +20,13 @@ def processRawData(raw_data, bag_delimiter):
         # convert to priority number
         for i in range(len(bag)):
             pbag.append(calcItemPriority(bag[i]))
-        # then split the bag in two
-        midpoint = int(len(pbag)/2)
-        bag_split = [pbag[0:midpoint],pbag[midpoint:]]
-        bags.append(bag_split) 
-    return bags
+        # we don't bother splitting them into 2 compartments anymore
+    # now group the bags into groups of 3
+    num_groups = int(len(bags))/3
+    groups = []
+    for group in range(num_groups):
+        groups.append(bags[group:group+3])
+    return groups
 
 ##########################################
 #           CALC ITEM PRIORITY
@@ -64,13 +66,54 @@ def calcBagScores(bags):
         # It has a number of rows equal to the number of priorities, and a column for each compartment
         checklist = np.zeros([num_rows,num_cols])
         # for each item in (both) compartments, flag the appropriate position in the data structure and calculate the output if found.
-        score = score + checkForMatch(checklist,bag)
+        score = score + checkBagForMatch(checklist,bag)
+    return score
+
+##########################################
+#            CALC GROUP SCORES
+##########################################
+# Determines the score of each bag based on whichever item is shared between the 2 compartments
+#
+def calcGroupScores(bags):
+    
+    # predefining the matrix dimensions (see below)
+    num_rows = calcItemPriority("Z") + 1
+    num_cols = 2
+    
+    # init the score
+    score = 0
+    
+    # For each bag
+    for bag in bags:
+        # Create a data structure that will be used as a logical lookup
+        # It has a number of rows equal to the number of priorities, and a column for each compartment
+        checklist = np.zeros([num_rows,num_cols])
+        # for each item in (both) compartments, flag the appropriate position in the data structure and calculate the output if found.
+        score = score + checkGroupForMatch(checklist,bag)
     return score
 
 ##########################################
 #         CHECK ONE BAG FOR MATCH
 ##########################################
-def checkForMatch(checklist, bag):
+def checkBagForMatch(checklist, bag):
+    score = 0 # init just in case
+    # first iterating over each row
+    for i in range(np.size(bag,1)):
+        # then over each of the 2 comparments
+        for j in range(np.size(bag,0)):
+            item_priority = bag[j][i]
+            # flag the presence of this item
+            checklist[item_priority][j] = 1
+            # look for a match on this row
+            if np.sum(checklist[item_priority]) > 1:
+                score = item_priority
+                return score
+    return score
+
+##########################################
+#         CHECK ONE GROUP FOR MATCH
+##########################################
+def checkGroupForMatch(checklist, group):
     score = 0 # init just in case
     # first iterating over each row
     for i in range(np.size(bag,1)):
@@ -89,8 +132,8 @@ def checkForMatch(checklist, bag):
 #            MAIN FUNCTION
 ##########################################
 def main():
-    bags = processRawData(raw_input,"\n")
-    total = calcBagScores(bags)
+    groups = processRawData(raw_input,"\n")
+    total = calcGroupScores(groups)
     print("TOTAL SCORE:")
     print(total)
 
