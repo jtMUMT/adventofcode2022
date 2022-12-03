@@ -44,6 +44,17 @@ def findMostCalorificElfBag(elves):
     return most_calories
 
 ##########################################
+#     SORT ELF BAGS
+##########################################
+def sortElvesByCalories(elves):
+    elf_sorted_amount = []
+    for e in range(len(elves)):
+        elf_sorted_amount.append(elves[e].countCalories())
+    elf_sorted_amount.sort()
+    elf_sorted_amount.reverse()
+    return elf_sorted_amount
+
+##########################################
 #            MAIN FUNCTION
 ##########################################
 def main():
@@ -51,6 +62,12 @@ def main():
     most_cals = findMostCalorificElfBag(elves)
     print("MOST CALORIES CARRIED BY AN ELF:")
     print(most_cals)
+    
+    #determining sum of top 3 elf bags
+    sorted_elf_bags = np.asarray(sortElvesByCalories(elves))
+    top_3_sum = np.sum(sorted_elf_bags[0:3])
+    print("SUM OF TOP 3 ELF BAGS:")
+    print(top_3_sum)       
         
 
 ##########################################
