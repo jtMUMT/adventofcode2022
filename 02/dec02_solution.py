@@ -3,8 +3,6 @@
 from dec02_input_data import *
 from dec02_config import *
 
-import numpy as np
-
 ##########################################
 #            PARSE INPUT FN
 ##########################################
