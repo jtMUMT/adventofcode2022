@@ -16,7 +16,24 @@ WIN = 0
 DRAW = 1
 LOSS = 2
 
-# Here is the lookup table then
+# For part 2 we're throwing the match, and our codes
+# now represent the following desired match result. All
+# this really means is that we'll add an extra layer of 
+# translation and then re-use our old code for the 
+# processing of the round. I'm using these labels just to
+# make this file a little bit more readable
+MUST_LOSE = "X"
+MUST_DRAW = "Y"
+MUST_WIN = "Z"
+
+# Here is the lookup table for part 2
+THROW_LOOKUP = {
+    "A": {MUST_WIN:"Y", MUST_DRAW:"X", MUST_LOSE:"Z"},
+    "B": {MUST_WIN:"Z", MUST_DRAW:"Y", MUST_LOSE:"X"},
+    "C": {MUST_WIN:"X", MUST_DRAW:"Z", MUST_LOSE:"Y"},
+    }
+
+# Here is the lookup table for part 1
 RPS_LOOKUP = {
     "A": {"Y":WIN, "X":DRAW, "Z":LOSS},
     "B": {"Z":WIN, "Y":DRAW, "X":LOSS},

@@ -29,6 +29,16 @@ def calcRoundScore(their_choice, my_choice):
     score = RESULT_SCORE[result] + CHOICE_SCORE[my_choice]
     return score
 
+##########################################
+#     CHOOSE BASED ON DESIRED RESULT
+##########################################
+#
+# Given a 2-element list of choices, calculate the score
+#
+def forceDesiredResult(their_choice, my_desired_result):
+    new_choice = THROW_LOOKUP[their_choice][my_desired_result]
+    return new_choice
+
 
 ##########################################
 #            MAIN FUNCTION
@@ -37,7 +47,10 @@ def main():
     rounds = chunkRawData(raw_input,"\n"," ")
     total = 0
     for r in rounds:
-        total = total + calcRoundScore(r[0], r[1])
+        their_choice = r[0]
+        my_desired_result = r[1]
+        my_choice = forceDesiredResult(their_choice, my_desired_result)
+        total = total + calcRoundScore(their_choice, my_choice)
         
     print("TOTAL SCORE:")
     print(total)
