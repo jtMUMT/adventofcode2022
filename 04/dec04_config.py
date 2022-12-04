@@ -2,7 +2,7 @@ USE_TEST_INPUT = False
 VERBOSE = True
 
 # Debugging
-PROBLEM_TRIALS = [989]
+PROBLEM_TRIALS = [3]
 
 # input parsing
 GROUP_DELIM = "\n"
