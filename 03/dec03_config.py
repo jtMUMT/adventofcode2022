@@ -1,3 +1,11 @@
+# Set False for "production" obv
+DEBUG_PRINT = False
+VERBOSE = True
+
+# More debugging (I'm so hungover lol)
+PROBLEM_TRIALS = [1,56]
+USE_TEST_INPUT = False
+
 # Setting up the priority numbers for each letter
 LOWERCASE_MIN = ord("a")
 LOWERCASE_MAX = ord("z")
