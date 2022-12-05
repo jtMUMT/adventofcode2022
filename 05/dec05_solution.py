@@ -90,7 +90,7 @@ class Warehouse():
         # copy the crates off the source stack
         crates_held = np.copy(self.stacks[source_top - num_crates:source_top, source_stack])
         # flip the contents (we place them back down in reverse order)
-        crates_held = np.flip(crates_held)
+#         crates_held = np.flip(crates_held) # NO LONGER APPLIES IN PART 2
         # zero out the source stack spots
         self.stacks[source_top - num_crates:source_top, source_stack] = np.zeros(np.size(crates_held))
         # overwrite the top spots in the target stack
