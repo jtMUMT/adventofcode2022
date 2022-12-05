@@ -1,10 +1,7 @@
-# Find the Elf carrying the most Calories. How many total Calories is that Elf carrying?
-
 from dec05_input_data import *
 from dec05_config import *
 
 import numpy as np
-from distutils.command import install
 
 #CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 #          WAREHOUSE STATE
