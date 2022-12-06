@@ -36,7 +36,7 @@ def findStartPacket(messages):
         for pos in range(WINDOW_SIZE,len(msg)):
             window = msg[pos-WINDOW_SIZE:pos]
             if VERBOSE: print(pos,":",window) #~~~~~~~~~~~~~~~~~VERBOSE
-            if len(np.unique(window)) == 4:
+            if len(np.unique(window)) == WINDOW_SIZE:
                 positions[m] = pos
                 break
     return positions
