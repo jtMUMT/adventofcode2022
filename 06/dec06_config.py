@@ -1,0 +1,5 @@
+USE_TEST_INPUT = False
+DEBUG_PRINT = True
+VERBOSE = False
+
+WINDOW_SIZE = 4
