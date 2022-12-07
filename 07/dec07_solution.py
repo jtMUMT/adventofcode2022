@@ -62,17 +62,17 @@ class Directory():
     #------------------------------------
     #   GET ALL DIRS UNDER A CERTAIN SIZE
     #------------------------------------
-    def getDirsBySizeLimit(self,dir_list,size_limit):
+    def getDirsBySizeLimit(self,dir_list, min_size, max_size):
         self.calcSize() # in case it hasn't been done before
         
         # if this dir is under the limit, add it to the provided list
-        if self.size <= size_limit:
+        if min_size <= self.size <= max_size:
             dir_list.append(self)
         
         # now pass this call down our child dirs
         if len(self.children) != 0:
             for c in self.children:
-                dir_list = self.children[c].getDirsBySizeLimit(dir_list,size_limit)
+                dir_list = self.children[c].getDirsBySizeLimit(dir_list,min_size,max_size)
                            
         return dir_list
     
@@ -154,13 +154,40 @@ def main():
     dir_struct.calcSize()
     print(dir_struct)
     
-    dirs_under_limit = dir_struct.getDirsBySizeLimit([], FILESIZE_LIMIT)
+    print("TOTAL DISK SPACE:",TOTAL_DISKSPACE)    
+    print("USED:",dir_struct.size)
+    print("MAX DISK USAGE:",MAX_DISK_USAGE)
+    
+    space_remaining = TOTAL_DISKSPACE - dir_struct.size
+    print("DISK SPACE REMAINING:",space_remaining)
+    
+    space_needed = dir_struct.size - MAX_DISK_USAGE
+    print("NEED TO FREE UP:",space_needed)
+    
+    print("")
+    search_low = space_needed
+    search_high = TOTAL_DISKSPACE
+    
+    print("TOTAL BETWEEN:",search_low,"and",search_high,":")
+    dirs_under_limit = dir_struct.getDirsBySizeLimit([], search_low, search_high)
     
     total_under_limit = 0
+    
+    # this is so hacky. SORRY
+    sizes = []
+    
     for d in dirs_under_limit:
         print(d.name,d.size)
         total_under_limit = total_under_limit + d.size
+        sizes.append(d.size)
     print("Total",total_under_limit)
+    
+    sizes.sort()
+    print("Smallest of these has a size of",sizes[0])
+    
+    
+    
+    
 
 ##########################################
 #           SCRIPT EXECUTION
