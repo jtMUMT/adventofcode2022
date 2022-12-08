@@ -59,6 +59,49 @@ def isTreeVisible(trees,x,y):
         return 1
     else:
         return 0
+    
+##########################################
+#            SCORE SCENERY
+##########################################
+def scenicScore(trees,x,y):
+    # any edge will have a score of zero
+    if x == 0 or x == np.size(trees,0)-1 or y == 0 or y == np.size(trees,1)-1:
+        return 0
+    
+    # for each of 4 cardinal directions,
+    # determine how far until a tree
+    # is equal or higher than this tree
+    my_height = trees[x,y]
+    
+    sightlines = []
+    sight_scores = []
+    
+    if x == 1 and y == 2:
+        dummy = "break"
+    
+    # NORTH
+    sightlines.append(trees[x,y-1::-1])
+    # SOUTH
+    sightlines.append(trees[x,y+1:])
+    # EAST
+    sightlines.append(trees[x+1:,y])
+    # WEST
+    sightlines.append(trees[x-1::-1,y])
+    
+    for line in sightlines:
+        sight_score = 0
+        for tree in line:
+            if tree < my_height:
+                sight_score = sight_score + 1
+            else:
+                sight_score = sight_score + 1
+                break
+            
+        sight_scores.append(sight_score)
+            
+    final_score = np.prod(sight_scores)
+    
+    return final_score
                 
 
 ##########################################
@@ -72,18 +115,16 @@ def main():
         data = processRawData(raw_input)
         
     print(np.size(data,0),":",np.size(data,1))
-            
-    visible_trees = 0
+                
+    scores = []
     
     for row in range(np.size(data,0)):
         for column in range(np.size(data,1)):
-            isVisible = isTreeVisible(data, row, column)
-            visible_trees = visible_trees + isVisible
+            score = scenicScore(data, row, column)    
+            scores.append(score)        
+            print(row,column,":",score)
             
-            if isVisible == 1: print(row,column,":",visible_trees,"*") 
-            else: print(row,column,":",visible_trees)
-            
-    print("Trees visible from outside the grid:", visible_trees)
+    print("Highest scenery score:", np.max(scores))
     
 ##########################################
 #           SCRIPT EXECUTION
