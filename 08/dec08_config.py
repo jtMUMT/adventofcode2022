@@ -1,0 +1,4 @@
+
+USE_TEST_INPUT = False
+DEBUG_PRINT = False
+VERBOSE = False
